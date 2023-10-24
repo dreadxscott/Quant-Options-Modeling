@@ -1,56 +1,29 @@
 import yfinance as yf
+import pandas as pd
 
-msft = yf.Ticker("MSFT")
+def save_options_data_to_csv(stock_symbol, output_csv):
+    try:
+        # Create a Ticker object for the specified stock symbol
+        ticker = yf.Ticker(stock_symbol)
 
-# get all stock info
-msft.info
+        # Fetch options data
+        options_data = ticker.options
 
-# get historical market data
-hist = msft.history(period="1mo")
+        # Create an empty DataFrame to store options data
+        options_df = pd.DataFrame()
 
-# show meta information about the history (requires history() to be called first)
-msft.history_metadata
+        for option_date in options_data:
+            option_chain = ticker.option_chain(option_date)
+            option_chain_df = option_chain.calls  # Use calls data (you can also get puts data)
+            option_chain_df['Expiration Date'] = option_date  # Add an expiration date column
+            options_df = pd.concat([options_df, option_chain_df])
 
-# show actions (dividends, splits, capital gains)
-msft.actions
-msft.dividends
-msft.splits
-msft.capital_gains  # only for mutual funds & etfs
+        # Save options data to a CSV file
+        options_df.to_csv(output_csv, index=False)
 
-# show share count
-msft.get_shares_full(start="2022-01-01", end=None)
+        print(f"Options data for {stock_symbol} saved to {output_csv}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-# show financials:
-# - income statement
-msft.income_stmt
-msft.quarterly_income_stmt
-# - balance sheet
-msft.balance_sheet
-msft.quarterly_balance_sheet
-# - cash flow statement
-msft.cashflow
-msft.quarterly_cashflow
-# see `Ticker.get_income_stmt()` for more options
-
-# show holders
-msft.major_holders
-msft.institutional_holders
-msft.mutualfund_holders
-
-# Show future and historic earnings dates, returns at most next 4 quarters and last 8 quarters by default. 
-# Note: If more are needed use msft.get_earnings_dates(limit=XX) with increased limit argument.
-msft.earnings_dates
-
-# show ISIN code - *experimental*
-# ISIN = International Securities Identification Number
-msft.isin
-
-# show options expirations
-msft.options
-
-# show news
-msft.news
-
-# get option chain for specific expiration
-opt = msft.option_chain('YYYY-MM-DD')
-# data available via: opt.calls, opt.puts
+# Example usage:
+save_options_data_to_csv("AAPL", "options_data.csv")
