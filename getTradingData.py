@@ -1,38 +1,56 @@
-import pandas as pd
-import pandas_datareader.data as web
-import numpy as np
+import yfinance as yf
 
-FB = web.YahooOptions('FB')
+msft = yf.Ticker("MSFT")
 
-#showing available expiries
-for exp in FB.expiry_dates:
-     print(exp.isoformat())
+# get all stock info
+msft.info
 
-# get call data
-calls = FB.get_call_data()
-calls
+# get historical market data
+hist = msft.history(period="1mo")
 
-#get put data
-puts  = FB.get_put_data()
-puts
+# show meta information about the history (requires history() to be called first)
+msft.history_metadata
 
+# show actions (dividends, splits, capital gains)
+msft.actions
+msft.dividends
+msft.splits
+msft.capital_gains  # only for mutual funds & etfs
 
-#get call data based on specific expiry
-FB.get_call_data(month =2 , year = 2021)
+# show share count
+msft.get_shares_full(start="2022-01-01", end=None)
 
-# getting all call data, can also pass in a datetime to the expiry below
-allcalls = FB.get_call_data(expiry= FB.expiry_dates)
+# show financials:
+# - income statement
+msft.income_stmt
+msft.quarterly_income_stmt
+# - balance sheet
+msft.balance_sheet
+msft.quarterly_balance_sheet
+# - cash flow statement
+msft.cashflow
+msft.quarterly_cashflow
+# see `Ticker.get_income_stmt()` for more options
 
-#notice index is in multiindex
-allcalls.index
+# show holders
+msft.major_holders
+msft.institutional_holders
+msft.mutualfund_holders
 
-#changing to regular index
-allcalls.reset_index(inplace=True)
+# Show future and historic earnings dates, returns at most next 4 quarters and last 8 quarters by default. 
+# Note: If more are needed use msft.get_earnings_dates(limit=XX) with increased limit argument.
+msft.earnings_dates
 
-#get all available data for puts and calls at every expiration
-alloptions = FB.get_all_data()
+# show ISIN code - *experimental*
+# ISIN = International Securities Identification Number
+msft.isin
 
-alloptions.reset_index(inplace=True)
+# show options expirations
+msft.options
 
-# perform calculate on the data.
-alloptions['mid_price'] = (alloptions.Ask - alloptions.Bid) / 2
+# show news
+msft.news
+
+# get option chain for specific expiration
+opt = msft.option_chain('YYYY-MM-DD')
+# data available via: opt.calls, opt.puts
