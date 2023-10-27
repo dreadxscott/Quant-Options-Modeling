@@ -5,7 +5,7 @@
 #include <vector>
 
 int main() {
-    std::ifstream file("data.csv");
+    std::ifstream file("AAPL_options_data.csv");
     std::string line;
 
     while (std::getline(file, line)) {

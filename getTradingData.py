@@ -26,4 +26,5 @@ def save_options_data_to_csv(stock_symbol, output_csv):
         print(f"An error occurred: {e}")
 
 # Example usage:
-save_options_data_to_csv("AAPL", "options_data.csv")
+stock_symbol = "AAPL"
+save_options_data_to_csv("{stock_symbol}", "{stock_symbol}_options_data.csv")
