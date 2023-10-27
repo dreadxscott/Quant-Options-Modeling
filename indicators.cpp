@@ -591,7 +591,7 @@ public:
     vector<double> fibonacci  = {0.236, 0.382, 0.50, 0.618, 0.782}//typical levels used
     FibonacciRetracement(double price1, double price2) {
         if (price1 > price2) {
-            cerr << "Not a Retracement" << endl;
+            cerr << "Not a Retracement. Price2 must be higher than Price1." << endl;
             return;
         }
         for (int i = 0; i < (int)FibonacciRetracementLevels.size(); i++) {
@@ -604,10 +604,16 @@ public:
 
 class FibonacciExtension {
 public:
-    vector<double> FibonacciExtensionLevels;
-    vector<double> fibonacci = {};
-    FibonacciExtensionLevels(double price1, double price2) {
-        
+    vector<double> upper_targets;
+    vector<double> lower_targets;
+    vector<double> fibonacci = {.618, 1, 1.618, 2, 2.618};
+    FibonacciExtensionLevels(double price1, double price2, double price3) {
+        double move = (price2-price1);
+        for (int i = 0; i < (int)fibonacci.size(); i++) {
+            move *= fibonacci.at(i);
+            upper_targets.push_back(price3+move);
+            lower_targets.push_back(price3-move);
+        }
     }
 };
 
