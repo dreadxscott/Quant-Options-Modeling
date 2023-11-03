@@ -25,6 +25,22 @@ def save_options_data_to_csv(stock_symbol, output_csv):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+def save_stock_data_to_csv(stock_symbol, output_csv):
+    try:
+        # Create a Ticker object for the specified stock symbol
+        ticker = yf.Ticker(stock_symbol)
+
+        # Get historical data for the past month
+        historical_data = ticker.history(period="6mo")
+
+        # Save the historical data to a CSV file
+        historical_data.to_csv(output_csv)
+
+        print(f"Stock data for {stock_symbol} saved to {output_csv}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 # Example usage:
 stock_symbol = "AAPL"
-save_options_data_to_csv("{stock_symbol}", "{stock_symbol}_options_data.csv")
+save_stock_data_to_csv(stock_symbol, f"{stock_symbol}_stock_info.csv")
+#save_options_data_to_csv(stock_symbol, f"{stock_symbol}_options_data.csv")

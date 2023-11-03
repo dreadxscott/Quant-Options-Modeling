@@ -38,7 +38,7 @@ class BsOption:
     def d1(self):
         return (np.log(self.S/self.K) + (self.r - self.q + self.sigma**2/2)*self.T) / (self.sigma * np.sqrt(self.T))
     
-    def d21(self):
+    def d2(self):
         return self.d1() - self.sigma*np.sqrt(self.T)
     
     def _call_value(self):

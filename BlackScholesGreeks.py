@@ -76,5 +76,3 @@ def BS_RHO_PUT(S, K, sigma, r, q, t):
     d2 = d1 - sigma*math.sqrt(t)
     rho_p = (-1/100) * (K * t * math.exp(-r*t) * N(-d2))
     return rho_p
-
-
