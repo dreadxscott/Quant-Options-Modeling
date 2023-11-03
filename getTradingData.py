@@ -31,7 +31,7 @@ def save_stock_data_to_csv(stock_symbol, output_csv):
         ticker = yf.Ticker(stock_symbol)
 
         # Get historical data for the past month
-        historical_data = ticker.history(period="6mo")
+        historical_data = ticker.history(period="12mo")
 
         # Save the historical data to a CSV file
         historical_data.to_csv(output_csv)
@@ -42,5 +42,5 @@ def save_stock_data_to_csv(stock_symbol, output_csv):
 
 # Example usage:
 stock_symbol = "AAPL"
-save_stock_data_to_csv(stock_symbol, f"{stock_symbol}_stock_info.csv")
+save_stock_data_to_csv(stock_symbol, f"{stock_symbol}_stock_data_LSTM.csv")
 #save_options_data_to_csv(stock_symbol, f"{stock_symbol}_options_data.csv")
